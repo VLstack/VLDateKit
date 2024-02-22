@@ -1,8 +1,29 @@
-//
-//  File.swift
-//  
-//
-//  Created by Laurent Vilday on 22/02/2024.
-//
-
 import Foundation
+
+public
+extension DateFormatter
+{
+ static let dayOfWeekShort: DateFormatter =
+ {
+  let formatter = DateFormatter()
+  formatter.dateFormat = "E"
+  
+  return formatter
+ }()
+ 
+ static let ddMM: DateFormatter =
+ {
+  let formatter = DateFormatter()
+  formatter.dateFormat = "dd/MM"
+  
+  return formatter
+ }()
+ 
+ static let ddMMyyyy: DateFormatter =
+ {
+  let formatter = DateFormatter()
+  formatter.dateFormat = "dd/MM/yyyy"
+
+  return formatter
+ }()
+}
