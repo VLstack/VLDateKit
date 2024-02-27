@@ -40,7 +40,16 @@ extension Date
  func minutesDuration(to date: Date) -> Int?
  {
   let calendar = Calendar.current
-  let components = calendar.dateComponents([.hour, .minute], from: self, to: date)
+
+  let componentsEnd = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+  guard let dateEnd = calendar.date(from: componentsEnd)
+  else { return nil }
+
+  let componentsSelf = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: self)
+  guard let dateSelf = calendar.date(from: componentsSelf)
+  else { return nil }
+
+  let components = calendar.dateComponents([.hour, .minute], from: dateSelf, to: dateEnd)
 
   if let hours = components.hour,
      let minutes = components.minute
