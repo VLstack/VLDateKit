@@ -60,4 +60,27 @@ extension Date
   return nil
  }
  
+ var startOfDay: Date?
+ {
+  let calendar = Calendar.current
+  let selfComponents = calendar.dateComponents([.year, .month, .day], from: self)
+  var components = selfComponents
+  components.hour = 0
+  components.minute = 0
+  components.second = 0
+
+  return calendar.date(from: components)
+ }
+     
+ var endOfDay: Date? 
+ {
+  let calendar = Calendar.current
+  let selfComponents = calendar.dateComponents([.year, .month, .day], from: self)
+  var components = selfComponents
+  components.hour = 23
+  components.minute = 59
+  components.second = 59
+
+  return calendar.date(from: components)
+ }
 }
