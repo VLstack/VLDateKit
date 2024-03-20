@@ -72,16 +72,36 @@ extension Date
 
   return calendar.date(from: components)
  }
-     
- var endOfDay: Date? 
+ 
+// TODO: remove when new method yesterday with granularity is tested and validated
+// func yesterday() -> Date?
+// {
+//  let calendar = Calendar.current
+//  if let yesterday = calendar.date(byAdding: .day, value: -1, to: self)
+//  {
+//   return yesterday
+//  }
+//  
+//  return nil
+// }
+ 
+ func yesterday(toGranularity: Calendar.Component = .day) -> Date?
  {
   let calendar = Calendar.current
-  let selfComponents = calendar.dateComponents([.year, .month, .day], from: self)
-  var components = selfComponents
-  components.hour = 23
-  components.minute = 59
-  components.second = 59
-
-  return calendar.date(from: components)
+  let map: [Calendar.Component: Set<Calendar.Component>] = [
+   .day: [.year, .month, .day],
+   .hour: [ .year, .month, .day, .hour ],
+   .minute: [ .year, .month, .day, .hour, .minute ],
+   .second: [ .year, .month, .day, .hour, .minute, .second ],
+   .nanosecond: [ .year, .month, .day, .hour, .minute, .second, .nanosecond ]
+  ]
+  let components: DateComponents = calendar.dateComponents(map[toGranularity] ?? [ .year, .month, .day ], from: self)
+  if let now = calendar.date(from: components),
+     let yesterday = calendar.date(byAdding: .day, value: -1, to: now)
+  {
+   return yesterday
+  }
+  
+  return nil
  }
 }
