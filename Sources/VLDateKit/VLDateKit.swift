@@ -17,6 +17,18 @@ extension Date
   }
  }
  
+ var endOfDay: Date?
+ {
+  let calendar = Calendar.current
+  let selfComponents = calendar.dateComponents([.year, .month, .day], from: self)
+  var components = selfComponents
+  components.hour = 23
+  components.minute = 59
+  components.second = 59
+
+  return calendar.date(from: components)
+ }
+ 
  func isSame(_ date: Date?,
              toGranularity: Calendar.Component = .day) -> Bool
  {
