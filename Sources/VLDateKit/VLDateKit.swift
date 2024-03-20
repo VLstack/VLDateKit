@@ -38,17 +38,6 @@ extension Date
   return Calendar.current.isDate(self, equalTo: date, toGranularity: toGranularity)
  }
  
- func yesterday() -> Date?
- {
-  let calendar = Calendar.current
-  if let yesterday = calendar.date(byAdding: .day, value: -1, to: self)
-  {
-   return yesterday
-  }
-  
-  return nil
- }
- 
  func minutesDuration(to date: Date) -> Int?
  {
   let calendar = Calendar.current
