@@ -26,6 +26,15 @@ public extension Date
  {
   Calendar.current.component(.day, from: self)
  }
+ 
+ func duration(to date: Date,
+               components: Set<Calendar.Component> = [ .hour, .minute, .second ]) -> DateComponents
+ {
+  let fromDate: Date = min(date, self)
+  let toDate: Date = max(date, self)
+
+  return Calendar.current.dateComponents(components, from: fromDate, to: toDate)
+ }
 
  var endOfDay: Date?
  {
