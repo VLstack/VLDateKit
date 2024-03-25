@@ -50,6 +50,7 @@ public extension Date
   return Calendar.current.isDate(self, equalTo: date, toGranularity: toGranularity)
  }
  
+ // TODO: create a func "duration" with parameters to define granularity
  func minutesDuration(to date: Date) -> Int?
  {
   let calendar = Calendar.current
