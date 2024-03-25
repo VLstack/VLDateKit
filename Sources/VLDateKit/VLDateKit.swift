@@ -85,6 +85,14 @@ public extension Date
 
   return calendar.date(from: components)
  }
+ 
+ var startOfMonth: Date
+ {
+  guard let day = Calendar.current.dateInterval(of: .month, for: self)?.start
+  else { return .distantPast }
+  
+  return day
+ }
   
  func yesterday(toGranularity: Calendar.Component = .day) -> Date?
  {
