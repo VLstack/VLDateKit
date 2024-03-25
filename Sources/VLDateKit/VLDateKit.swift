@@ -98,17 +98,10 @@ public extension Date
  {
   Calendar.current.component(.day, from: endOfMonth)
  }
- 
- var startOfDay: Date?
+  
+ var startOfDay: Date
  {
-  let calendar = Calendar.current
-  let selfComponents = calendar.dateComponents([.year, .month, .day], from: self)
-  var components = selfComponents
-  components.hour = 0
-  components.minute = 0
-  components.second = 0
-
-  return calendar.date(from: components)
+  Calendar.current.startOfDay(for: self)
  }
  
  var startOfMonth: Date
