@@ -64,6 +64,7 @@ public extension Date
  
  func isPast() -> Bool { self < Date() }
 
+ func isFuture() -> Bool { self > Date() }
 
  func isSame(_ date: Date?,
              toGranularity: Calendar.Component = .day) -> Bool
