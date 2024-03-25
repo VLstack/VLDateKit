@@ -59,6 +59,18 @@ public extension Date
   
   return day
  }
+ 
+ func isBetween(_ startDate: Date,
+                to endDate: Date) -> Bool
+ {
+  (startDate...endDate).contains(self)
+ }
+
+ func isBetween(_ startDate: Date,
+                until endDate: Date) -> Bool
+ {
+  (startDate..<endDate).contains(self)
+ }
 
  func isSame(_ date: Date?,
              toGranularity: Calendar.Component = .day) -> Bool
