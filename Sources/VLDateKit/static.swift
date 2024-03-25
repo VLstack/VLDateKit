@@ -4,19 +4,8 @@ public extension Date
 {
  static var firstDayOfWeek = Calendar.current.firstWeekday
  
- static var firstLetterOfWeekday: [ String ]
+ static var weekdays: [ String ]
  {
-//  let calendar = Calendar.current
-//  let weekdays = calendar.shortWeekdaySymbols
-//  
-//  return weekdays.map
-//  {
-//   weekday in
-//   guard let firstLetter = weekday.first
-//   else { return "" }
-//   
-//   return String(firstLetter)
-//  }
   let calendar = Calendar.current
   var weekdays = calendar.shortWeekdaySymbols
   if firstDayOfWeek > 1
@@ -34,16 +23,6 @@ public extension Date
   return weekdays
  }
  
- static var firstLetterOfWeekDayCapitalized: [ String ]
- {
-  firstLetterOfWeekday.map { $0.capitalized }
- }
- 
- static var firstLetterOfWeekDayLowered: [ String ]
- {
-  firstLetterOfWeekday.map { $0.localizedLowercase }
- }
-
  static var fullMonthNames: [ String ]
  {
   let formatter = DateFormatter()
