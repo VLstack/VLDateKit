@@ -72,19 +72,7 @@ public extension Date
 
   return calendar.date(from: components)
  }
- 
-// TODO: remove when new method yesterday with granularity is tested and validated
-// func yesterday() -> Date?
-// {
-//  let calendar = Calendar.current
-//  if let yesterday = calendar.date(byAdding: .day, value: -1, to: self)
-//  {
-//   return yesterday
-//  }
-//  
-//  return nil
-// }
- 
+  
  func yesterday(toGranularity: Calendar.Component = .day) -> Date?
  {
   let calendar = Calendar.current
