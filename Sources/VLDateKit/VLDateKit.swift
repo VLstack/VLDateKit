@@ -126,14 +126,6 @@ public extension Date
   reducingDays(1).startOfMonth
  }
  
-// var sundayBeforeStartOfMonth: Date
-// {
-//  let startOfMonthWeekday: Int = Calendar.current.component(.weekday, from: startOfMonth)
-//  let numberFromPreviousMonth: Int = startOfMonthWeekday - 1
-//  
-//  return startOfMonth.reducingDays(numberFromPreviousMonth)
-// }
-
  var yearNumber: Int
  {
   Calendar.current.component(.year, from: self)
