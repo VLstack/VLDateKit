@@ -17,7 +17,7 @@ public extension Date
   }
  }
 
- func addingDays(_ days: Int) -> Date 
+ func adding(days: Int) -> Date
  {
   Calendar.current.date(byAdding: .day, value: days, to: self)!
  }
