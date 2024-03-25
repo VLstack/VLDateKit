@@ -17,6 +17,11 @@ public extension Date
   }
  }
 
+ func addingDays(_ days: Int) -> Date 
+ {
+  Calendar.current.date(byAdding: .day, value: days, to: self)!
+ }
+ 
  var dayNumber: Int
  {
   Calendar.current.component(.day, from: self)
