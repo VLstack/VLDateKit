@@ -93,6 +93,14 @@ public extension Date
   
   return day
  }
+ 
+ var startOfPreviousMonth: Date
+ {
+  guard let day = Calendar.current.date(byAdding: .month, value: -1, to: self)
+  else { return .distantPast }
+  
+  return day.startOfMonth
+ }
   
  func yesterday(toGranularity: Calendar.Component = .day) -> Date?
  {
