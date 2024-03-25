@@ -2,6 +2,7 @@ import Foundation
 
 public extension Date
 {
+ @available(*, deprecated, message: "Define your own Date.init format in your project")
  init(fr dateString: String)
  {
   let dateFormatter = DateFormatter()
