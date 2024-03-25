@@ -50,6 +50,14 @@ public extension Date
   return lastDay.reducingDays(1)
  }
  
+ var firstWeekdayBeforeStartOfMonth: Date
+ {
+  let startOfMonthWeekday = Calendar.current.component(.weekday, from: startOfMonth)
+  let numberFromPreviousMonth = startOfMonthWeekday - Self.firstDayOfWeek
+  
+  return startOfMonth.reducingDays(numberFromPreviousMonth)
+ }
+ 
  func isBetween(_ startDate: Date,
                 to endDate: Date) -> Bool
  {
@@ -116,13 +124,13 @@ public extension Date
   reducingDays(1).startOfMonth
  }
  
- var sundayBeforeStartOfMonth: Date
- {
-  let startOfMonthWeekday: Int = Calendar.current.component(.weekday, from: startOfMonth)
-  let numberFromPreviousMonth: Int = startOfMonthWeekday - 1
-  
-  return startOfMonth.reducingDays(numberFromPreviousMonth)
- }
+// var sundayBeforeStartOfMonth: Date
+// {
+//  let startOfMonthWeekday: Int = Calendar.current.component(.weekday, from: startOfMonth)
+//  let numberFromPreviousMonth: Int = startOfMonthWeekday - 1
+//  
+//  return startOfMonth.reducingDays(numberFromPreviousMonth)
+// }
 
  var yearNumber: Int
  {
