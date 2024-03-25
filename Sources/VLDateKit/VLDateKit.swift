@@ -36,16 +36,9 @@ public extension Date
   return Calendar.current.dateComponents(components, from: fromDate, to: toDate)
  }
 
- var endOfDay: Date?
+ var endOfDay: Date
  {
-  let calendar = Calendar.current
-  let selfComponents = calendar.dateComponents([.year, .month, .day], from: self)
-  var components = selfComponents
-  components.hour = 23
-  components.minute = 59
-  components.second = 59
-
-  return calendar.date(from: components)
+  Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: self)!
  }
  
  var endOfMonth: Date
