@@ -15,12 +15,12 @@ final class VLDateKitTests: XCTestCase
  {
   var dateComponents: DateComponents = .init()
   dateComponents.year = 2024
-  dateComponents.month = 5
-  dateComponents.day = 15
-  dateComponents.hour = 17
-  dateComponents.minute = 54
-  dateComponents.second = 32
-  dateComponents.nanosecond = 923
+  dateComponents.month = 3
+  dateComponents.day = 20
+  dateComponents.hour = 13
+  dateComponents.minute = 16
+  dateComponents.second = 49
+  dateComponents.nanosecond = 0
   
   guard let date: Date = Calendar.current.date(from: dateComponents)
   else { XCTFail("Cannot create base date"); return }
@@ -30,7 +30,7 @@ final class VLDateKitTests: XCTestCase
   
   guard let dateMinus1: Date = Calendar.current.date(byAdding: .day, value: -1, to: date)
   else { XCTFail("Cannot create dateMinus1"); return }
-  
+
   XCTAssert(yesterday.isSame(dateMinus1, toGranularity: .day), "Yesterday is invalid")
  }
 }
