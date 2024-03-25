@@ -16,7 +16,12 @@ public extension Date
    self = Date.now
   }
  }
-  
+
+ var dayNumber: Int
+ {
+  Calendar.current.component(.day, from: self)
+ }
+
  var endOfDay: Date?
  {
   let calendar = Calendar.current
