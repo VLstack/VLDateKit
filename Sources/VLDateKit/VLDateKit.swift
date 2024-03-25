@@ -75,6 +75,11 @@ public extension Date
   return nil
  }
  
+ var numberOfDaysInMonth: Int
+ {
+  Calendar.current.component(.day, from: endOfMonth)
+ }
+ 
  var startOfDay: Date?
  {
   let calendar = Calendar.current
