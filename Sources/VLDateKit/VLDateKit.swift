@@ -29,6 +29,18 @@ public extension Date
   return calendar.date(from: components)
  }
  
+ var endOfMonth: Date
+ {
+  // Unfortunatly this lastDay is in fact the nextDay of the month at midnight
+  guard let lastDay: Date = Calendar.current.dateInterval(of: .month, for: self)?.end
+  else { return .distantFuture }
+  
+  guard let day = Calendar.current.date(byAdding: .day, value: -1, to: lastDay)
+  else { return .distantFuture }
+  
+  return day
+ }
+
  func isSame(_ date: Date?,
              toGranularity: Calendar.Component = .day) -> Bool
  {
