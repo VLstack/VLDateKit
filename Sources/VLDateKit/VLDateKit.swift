@@ -123,7 +123,7 @@ public extension Date
  
  var startOfPreviousMonth: Date
  {
-  reducingDays(1).startOfMonth
+  reducing(.month, value: 1).startOfMonth
  }
  
  var yearNumber: Int
