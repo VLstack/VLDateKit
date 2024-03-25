@@ -80,6 +80,11 @@ public extension Date
   return nil
  }
  
+ var monthNumber: Int
+ {
+  Calendar.current.component(.month, from: self)
+ }
+ 
  var numberOfDaysInMonth: Int
  {
   Calendar.current.component(.day, from: endOfMonth)
