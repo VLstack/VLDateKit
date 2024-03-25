@@ -128,7 +128,12 @@ public extension Date
   
   return date
  }
-  
+
+ var yearNumber: Int
+ {
+  Calendar.current.component(.year, from: self)
+ }
+
  func yesterday(toGranularity: Calendar.Component = .day) -> Date?
  {
   let calendar = Calendar.current
