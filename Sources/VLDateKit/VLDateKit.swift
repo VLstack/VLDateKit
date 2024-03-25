@@ -51,6 +51,7 @@ public extension Date
  }
  
  // TODO: create a func "duration" with parameters to define granularity
+ // TODO: create also a version with "from" parameter
  func minutesDuration(to date: Date) -> Int?
  {
   let calendar = Calendar.current
