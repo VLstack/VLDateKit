@@ -54,10 +54,7 @@ public extension Date
   guard let lastDay: Date = Calendar.current.dateInterval(of: .month, for: self)?.end
   else { return .distantFuture }
   
-  guard let day = Calendar.current.date(byAdding: .day, value: -1, to: lastDay)
-  else { return .distantFuture }
-  
-  return day
+  return lastDay.reducingDays(1)
  }
  
  func isBetween(_ startDate: Date,
@@ -119,10 +116,7 @@ public extension Date
  
  var startOfPreviousMonth: Date
  {
-  guard let day = Calendar.current.date(byAdding: .month, value: -1, to: self)
-  else { return .distantPast }
-  
-  return day.startOfMonth
+  reducingDays(1).startOfMonth
  }
  
  var sundayBeforeStartOfMonth: Date
@@ -130,10 +124,7 @@ public extension Date
   let startOfMonthWeekday: Int = Calendar.current.component(.weekday, from: startOfMonth)
   let numberFromPreviousMonth: Int = startOfMonthWeekday - 1
   
-  guard let date: Date = Calendar.current.date(byAdding: .day, value: -numberFromPreviousMonth, to: startOfMonth)
-  else { return .distantPast }
-  
-  return date
+  return startOfMonth.reducingDays(numberFromPreviousMonth)
  }
 
  var yearNumber: Int
@@ -152,12 +143,7 @@ public extension Date
    .nanosecond: [ .year, .month, .day, .hour, .minute, .second, .nanosecond ]
   ]
   let components: DateComponents = calendar.dateComponents(map[toGranularity] ?? [ .year, .month, .day ], from: self)
-  if let now = calendar.date(from: components),
-     let yesterday = calendar.date(byAdding: .day, value: -1, to: now)
-  {
-   return yesterday
-  }
-  
-  return nil
+
+  return calendar.date(from: components)?.reducingDays(1)
  }
 }
