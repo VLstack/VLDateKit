@@ -2,6 +2,7 @@ import Foundation
 
 public extension DateFormatter
 {
+ @available(*, deprecated, message: "Define your own format in your project")
  static let dayOfWeekShort: DateFormatter =
  {
   let formatter = DateFormatter()
@@ -10,6 +11,7 @@ public extension DateFormatter
   return formatter
  }()
  
+ @available(*, deprecated, message: "Define your own format in your project")
  static let ddMM: DateFormatter =
  {
   let formatter = DateFormatter()
@@ -18,6 +20,7 @@ public extension DateFormatter
   return formatter
  }()
  
+ @available(*, deprecated, message: "Define your own format in your project")
  static let ddMMyyyy: DateFormatter =
  {
   let formatter = DateFormatter()
