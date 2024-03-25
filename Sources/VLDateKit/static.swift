@@ -6,17 +6,32 @@ public extension Date
  
  static var firstLetterOfWeekday: [ String ]
  {
+//  let calendar = Calendar.current
+//  let weekdays = calendar.shortWeekdaySymbols
+//  
+//  return weekdays.map
+//  {
+//   weekday in
+//   guard let firstLetter = weekday.first
+//   else { return "" }
+//   
+//   return String(firstLetter)
+//  }
   let calendar = Calendar.current
-  let weekdays = calendar.shortWeekdaySymbols
-  
-  return weekdays.map
+  var weekdays = calendar.shortWeekdaySymbols
+  if firstDayOfWeek > 1
   {
-   weekday in
-   guard let firstLetter = weekday.first
-   else { return "" }
-   
-   return String(firstLetter)
+   for _ in 1..<firstDayOfWeek
+   {
+    if let first = weekdays.first
+    {
+     weekdays.append(first)
+     weekdays.removeFirst()
+    }
+   }
   }
+  
+  return weekdays
  }
  
  static var firstLetterOfWeekDayCapitalized: [ String ]
