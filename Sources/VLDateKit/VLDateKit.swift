@@ -1,7 +1,6 @@
 import Foundation
 
-public
-extension Date
+public extension Date
 {
  init(fr dateString: String)
  {
