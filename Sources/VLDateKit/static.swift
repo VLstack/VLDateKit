@@ -2,6 +2,8 @@ import Foundation
 
 public extension Date
 {
+ static var firstDayOfWeek = Calendar.current.firstWeekday
+ 
  static var firstLetterOfWeekday: [ String ]
  {
   let calendar = Calendar.current
