@@ -1,7 +1,6 @@
 import Foundation
 
-public
-extension DateFormatter
+public extension DateFormatter
 {
  static let dayOfWeekShort: DateFormatter =
  {
