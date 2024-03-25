@@ -83,27 +83,10 @@ public extension Date
  
  // TODO: create a func "duration" with parameters to define granularity
  // TODO: create also a version with "from" parameter
+ @available(*, deprecated, renamed: "duration", message: "use .duration(to: date, components: [ .minute ]) instead")
  func minutesDuration(to date: Date) -> Int?
  {
-  let calendar = Calendar.current
-
-  let componentsEnd = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
-  guard let dateEnd = calendar.date(from: componentsEnd)
-  else { return nil }
-
-  let componentsSelf = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: self)
-  guard let dateSelf = calendar.date(from: componentsSelf)
-  else { return nil }
-
-  let components = calendar.dateComponents([.hour, .minute], from: dateSelf, to: dateEnd)
-
-  if let hours = components.hour,
-     let minutes = components.minute
-  {
-   return hours * 60 + minutes
-  }
-
-  return nil
+  duration(to: date, components: [ .minute ]).minute
  }
  
  var monthNumber: Int
