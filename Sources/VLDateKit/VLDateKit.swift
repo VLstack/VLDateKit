@@ -98,7 +98,12 @@ public extension Date
  {
   Calendar.current.component(.day, from: endOfMonth)
  }
-  
+
+ func reducingDays(_ days: Int) -> Date
+ {
+  addingDays(-days)
+ }
+
  var startOfDay: Date
  {
   Calendar.current.startOfDay(for: self)
