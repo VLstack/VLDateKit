@@ -134,6 +134,17 @@ public extension Date
   
   return day.startOfMonth
  }
+ 
+ var sundayBeforeStartOfMonth: Date
+ {
+  let startOfMonthWeekday: Int = Calendar.current.component(.weekday, from: startOfMonth)
+  let numberFromPreviousMonth: Int = startOfMonthWeekday - 1
+  
+  guard let date: Date = Calendar.current.date(byAdding: .day, value: -numberFromPreviousMonth, to: startOfMonth)
+  else { return .distantPast }
+  
+  return date
+ }
   
  func yesterday(toGranularity: Calendar.Component = .day) -> Date?
  {
