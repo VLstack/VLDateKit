@@ -101,6 +101,30 @@ public extension Date
  {
   Calendar.current.component(.day, from: endOfMonth)
  }
+ 
+ var numberOfWeeksInMonth: Int 
+ {
+  numberOfCompleteWeeksInMonth + numberOfIncompleteWeeksInMonth
+ }
+ 
+ var numberOfCompleteWeeksInMonth: Int 
+ {
+  let calendar = Calendar.current
+  let interval = calendar.dateInterval(of: .month, for: self)!
+  let firstDayOfMonth = interval.start
+  let lastDayOfMonth = interval.end
+  let components = calendar.dateComponents([.weekOfMonth], from: firstDayOfMonth, to: lastDayOfMonth)
+
+  return components.weekOfMonth ?? 0
+ }
+ 
+ var numberOfIncompleteWeeksInMonth: Int 
+ {
+  let calendar = Calendar.current
+  let lastDayOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: self)!
+
+  return calendar.range(of: .weekOfMonth, in: .month, for: lastDayOfMonth)!.count < 7 ? 1 : 0
+ }
 
  func reducing(_ component: Calendar.Component = .day,
                value: Int) -> Date
