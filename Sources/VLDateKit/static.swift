@@ -3,7 +3,10 @@ import Foundation
 public extension Date
 {
  static var firstDayOfWeek = Calendar.current.firstWeekday
- 
+
+ // TODO: create a func to convert everything, or maybe use Measurement
+ static let secondsInDay: TimeInterval = 24 * 60 * 60
+
  static var weekdays: [ String ]
  {
   let calendar = Calendar.current

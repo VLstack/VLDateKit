@@ -131,7 +131,7 @@ public extension Date
  {
   adding(component, value: -value)
  }
-
+ 
  var startOfDay: Date
  {
   Calendar.current.startOfDay(for: self)
