@@ -1,10 +1,10 @@
 import Foundation
 
-public extension Date
+extension Date
 {
- static let firstDayOfWeek = Calendar.current.firstWeekday
+ public static let firstDayOfWeek = Calendar.current.firstWeekday
 
- static var fullMonthNames: [ String ]
+ public static var fullMonthNames: [ String ]
  {
   let formatter = DateFormatter()
   formatter.locale = Locale.current
@@ -22,9 +22,9 @@ public extension Date
  }
 
  // TODO: create a func to convert everything, or maybe use Measurement
- static let secondsInDay: TimeInterval = 24 * 60 * 60
+ public static let secondsInDay: TimeInterval = 24 * 60 * 60
 
- static var weekdays: [ String ]
+ public static var weekdays: [ String ]
  {
   let calendar = Calendar.current
   var weekdays = calendar.shortWeekdaySymbols
