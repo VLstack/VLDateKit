@@ -1,87 +1,132 @@
 import Foundation
 
-public extension Date
+extension Date
 {
- @available(*, deprecated, message: "Define your own Date.init format in your project")
- init(fr dateString: String)
+ public func adding(_ component: Calendar.Component = .day,
+                    value: Int,
+                    calendar: Calendar = .current) -> Date
  {
-  let dateFormatter = DateFormatter()
-  dateFormatter.dateFormat = "dd/MM/yyyy HH:mm:ss"
-  if let date = dateFormatter.date(from: dateString)
-  {
-   self = date
-  }
-  else
-  {
-   self = Date.now
-  }
+  calendar.date(byAdding: component, value: value, to: self) ?? self
  }
 
- func adding(_ component: Calendar.Component = .day,
-             value: Int) -> Date
+ /// Computes the number of full days between two dates, ignoring the time component.
+ /// Returns `0` if `start >= end`.
+ /// - Parameters:
+ ///   - start: The start date.
+ ///   - end: The end date.
+ ///   - calendar: The calendar to use for normalization and calculation.
+ /// - Returns: The number of whole days between `start` and `end`.
+ private func _countDaysBetween(_ start: Date,
+                                _ end: Date,
+                                calendar: Calendar) -> Int
  {
-  Calendar.current.date(byAdding: component, value: value, to: self)!
+  let startDate = calendar.startOfDay(for: start)
+  let endDate = calendar.startOfDay(for: end)
+  guard startDate < endDate else { return 0 }
+
+  return calendar.dateComponents([ .day ], from: startDate, to: endDate).day ?? 0
  }
- 
- var dayNumber: Int
+
+ /// Returns the number of days from the current date to the specified date.
+ /// If the other date is earlier than the current date, the result is `0`.
+ /// - Parameters:
+ ///   - other: The end date to count to.
+ ///   - calendar: The calendar to use (defaults to `.current`).
+ /// - Returns: The number of whole days between the two dates.
+ public func countDays(to other: Date,
+                       calendar: Calendar = .current) -> Int
  {
-  Calendar.current.component(.day, from: self)
+  self._countDaysBetween(self, other, calendar: calendar)
  }
- 
- func duration(to date: Date,
-               components: Set<Calendar.Component> = [ .hour, .minute, .second ]) -> DateComponents
+
+ /// Returns the number of days from the specified date to the current date.
+ /// If the current date is earlier than the other date, the result is `0`.
+ /// - Parameters:
+ ///   - other: The start date to count from.
+ ///   - calendar: The calendar to use (defaults to `.current`).
+ /// - Returns: The number of whole days between the two dates.
+ public func countDays(from other: Date,
+                       calendar: Calendar = .current) -> Int
+ {
+  self._countDaysBetween(other, self, calendar: calendar)
+ }
+
+ public var dayNumber: Int { self.dayNumber(calendar: .current) }
+
+ public func dayNumber(calendar: Calendar) -> Int
+ {
+  calendar.component(.day, from: self)
+ }
+
+ public func duration(to date: Date,
+                      components: Set<Calendar.Component> = [ .hour, .minute, .second ],
+                      calendar: Calendar = .current) -> DateComponents
  {
   let fromDate: Date = min(date, self)
   let toDate: Date = max(date, self)
 
-  return Calendar.current.dateComponents(components, from: fromDate, to: toDate)
+  return calendar.dateComponents(components, from: fromDate, to: toDate)
  }
 
- var endOfDay: Date
+ /// Returns the start of the next day, effectively representing the end of the current day using the current calendar.
+ public var endOfDay: Date { self.endOfDay(calendar: .current) }
+
+ /// Returns the start of the next day, effectively representing the end of the current day.
+ /// - Parameter calendar: The calendar to use.
+ /// - Returns: A `Date` corresponding to midnight of the following day.
+ public func endOfDay(calendar: Calendar) -> Date
  {
-  Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: self)!
+  calendar.startOfDay(for: calendar.date(byAdding: .day, value: 1, to: self) ?? self)
  }
- 
- var endOfMonth: Date
+
+ /// Returns the end of the month for the current date using the current calendar.
+ /// Note: The returned date is the start of the next month.
+ public var endOfMonth: Date { self.endOfMonth(calendar: .current) }
+
+ /// Returns the end of the month for the current date using a specified calendar.
+ /// Note: The returned date is the start of the next month.
+ /// - Parameter calendar: The calendar to use.
+ /// - Returns: A `Date` representing the end of the current month.
+ public func endOfMonth(calendar: Calendar) -> Date
  {
-  // Unfortunatly this lastDay is in fact the nextDay of the month at midnight
-  guard let lastDay: Date = Calendar.current.dateInterval(of: .month, for: self)?.end
-  else { return .distantFuture }
-  
-  return lastDay.reducing(.day, value: 1)
+  calendar.dateInterval(of: .month, for: self)?.end ?? self
  }
- 
- var firstWeekdayBeforeStartOfMonth: Date
+
+ public var firstWeekdayBeforeStartOfMonth: Date { self.firstWeekdayBeforeStartOfMonth(calendar: .current) }
+
+ public func firstWeekdayBeforeStartOfMonth(calendar: Calendar) -> Date
  {
-  let startOfMonthWeekday = Calendar.current.component(.weekday, from: startOfMonth)
+  let startOfMonthWeekday = calendar.component(.weekday, from: startOfMonth)
   let numberFromPreviousMonth = startOfMonthWeekday - Self.firstDayOfWeek
-  
+
   return startOfMonth.reducing(.day, value: numberFromPreviousMonth)
  }
- 
- func isBetween(_ startDate: Date,
-                to endDate: Date) -> Bool
+
+ public func isBetween(_ startDate: Date,
+                       to endDate: Date) -> Bool
  {
   (startDate...endDate).contains(self)
  }
 
- func isBetween(_ startDate: Date,
-                until endDate: Date) -> Bool
+ public func isBetween(_ startDate: Date,
+                       until endDate: Date) -> Bool
  {
   (startDate..<endDate).contains(self)
  }
- 
- func isPast() -> Bool { self < Date() }
 
- func isFuture() -> Bool { self > Date() }
+ public var isPast: Bool { self.isPast(relativeTo: Date()) }
+ public func isPast(relativeTo date: Date) -> Bool { self < date }
 
- func isSame(_ date: Date?,
-             toGranularity: Calendar.Component = .day) -> Bool
+ public var isFuture: Bool { self.isFuture(relativeTo: Date()) }
+ public func isFuture(relativeTo date: Date = Date()) -> Bool { self > date }
+
+ public func isSame(_ date: Date?,
+                    toGranularity: Calendar.Component = .day,
+                    calendar: Calendar = .current) -> Bool
  {
-  guard let date
-  else { return false }
-  
-  return Calendar.current.isDate(self, equalTo: date, toGranularity: toGranularity)
+  guard let date else { return false }
+
+  return calendar.isDate(self, equalTo: date, toGranularity: toGranularity)
  }
  
  // TODO: create a func "duration" with parameters to define granularity
@@ -92,24 +137,34 @@ public extension Date
   duration(to: date, components: [ .minute ]).minute
  }
  
- var monthNumber: Int
+ public var monthNumber: Int { self.monthNumber(calendar: .current) }
+
+ public func monthNumber(calendar: Calendar) -> Int
  {
-  Calendar.current.component(.month, from: self)
+  calendar.component(.month, from: self)
  }
- 
- var numberOfDaysInMonth: Int
+
+ public var numberOfDaysInMonth: Int { self.numberOfDaysInMonth(calendar: .current) }
+
+ public func numberOfDaysInMonth(calendar: Calendar) -> Int
  {
-  Calendar.current.component(.day, from: endOfMonth)
+  calendar.component(.day, from: endOfMonth)
  }
- 
- var numberOfWeeksInMonth: Int 
+
+ public var numberOfWeeksInMonth: Int
  {
-  numberOfCompleteWeeksInMonth + numberOfIncompleteWeeksInMonth
+  self.numberOfCompleteWeeksInMonth + self.numberOfIncompleteWeeksInMonth
  }
- 
- var numberOfCompleteWeeksInMonth: Int 
+
+ public func numberOfWeeksInMonth(calendar: Calendar) -> Int
  {
-  let calendar = Calendar.current
+  self.numberOfCompleteWeeksInMonth(calendar: calendar) + self.numberOfIncompleteWeeksInMonth(calendar: calendar)
+ }
+
+ public var numberOfCompleteWeeksInMonth: Int { self.numberOfCompleteWeeksInMonth(calendar: .current) }
+
+ public func numberOfCompleteWeeksInMonth(calendar: Calendar) -> Int
+ {
   let interval = calendar.dateInterval(of: .month, for: self)!
   let firstDayOfMonth = interval.start
   let lastDayOfMonth = interval.end
@@ -117,48 +172,68 @@ public extension Date
 
   return components.weekOfMonth ?? 0
  }
- 
- var numberOfIncompleteWeeksInMonth: Int 
+
+ public var numberOfIncompleteWeeksInMonth: Int { self.numberOfIncompleteWeeksInMonth(calendar: .current) }
+
+ public func numberOfIncompleteWeeksInMonth(calendar: Calendar) -> Int
  {
-  let calendar = Calendar.current
   let lastDayOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: self)!
 
   return calendar.range(of: .weekOfMonth, in: .month, for: lastDayOfMonth)!.count < 7 ? 1 : 0
  }
 
- func reducing(_ component: Calendar.Component = .day,
-               value: Int) -> Date
+ public func reducing(_ component: Calendar.Component = .day,
+                      value: Int,
+                      calendar: Calendar = .current) -> Date
  {
-  adding(component, value: -value)
+  adding(component,
+         value: -value,
+         calendar: calendar)
  }
  
- var startOfDay: Date
+ /// Returns the start of the day for the current date using the current calendar.
+ public var startOfDay: Date { self.startOfDay(calendar: .current) }
+
+ /// Returns the start of the day for the current date using a specified calendar.
+ /// - Parameter calendar: The calendar to use.
+ /// - Returns: A `Date` representing midnight at the start of the day.
+ public func startOfDay(calendar: Calendar) -> Date
  {
-  Calendar.current.startOfDay(for: self)
- }
- 
- var startOfMonth: Date
- {
-  guard let day = Calendar.current.dateInterval(of: .month, for: self)?.start
-  else { return .distantPast }
-  
-  return day
- }
- 
- var startOfPreviousMonth: Date
- {
-  reducing(.month, value: 1).startOfMonth
- }
- 
- var yearNumber: Int
- {
-  Calendar.current.component(.year, from: self)
+  calendar.startOfDay(for: self)
  }
 
- func yesterday(toGranularity: Calendar.Component = .day) -> Date?
+ /// Returns the start of the month for the current date using the current calendar.
+ public var startOfMonth: Date { self.startOfMonth(calendar: .current) }
+
+ /// Returns the start of the month for the current date using a specified calendar.
+ /// - Parameter calendar: The calendar to use.
+ /// - Returns: A `Date` representing the first day of the month.
+ public func startOfMonth(calendar: Calendar) -> Date
  {
-  let calendar = Calendar.current
-  let map: [Calendar.Component: Set<Calendar.Component>] = [
+  calendar.dateInterval(of: .month, for: self)?.start ?? self
+ }
+
+ public var startOfPreviousMonth: Date { self.startOfPreviousMonth(calendar: .current) }
+
+ public func startOfPreviousMonth(calendar: Calendar) -> Date
+ {
+  reducing(.month,
+           value: 1,
+           calendar: calendar).startOfMonth
+ }
+
+ public var yearNumber: Int { self.yearNumber(calendar: .current) }
+
+ public func yearNumber(calendar: Calendar) -> Int
+ {
+  calendar.component(.year, from: self)
+ }
+
+ public var yesterday: Date? { self.yesterday(toGranularity: .day, calendar: .current) }
+ public func yesterday(toGranularity: Calendar.Component = .day,
+                       calendar: Calendar = .current) -> Date?
+ {
+  let map: [ Calendar.Component: Set<Calendar.Component> ] = [
    .day: [.year, .month, .day],
    .hour: [ .year, .month, .day, .hour ],
    .minute: [ .year, .month, .day, .hour, .minute ],
