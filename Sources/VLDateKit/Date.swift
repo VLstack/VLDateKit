@@ -51,6 +51,26 @@ extension Date
   self._countDaysBetween(other, self, calendar: calendar)
  }
 
+ func currentDayInterval(using calendar: Calendar = .current) -> DateInterval?
+ {
+  calendar.dateInterval(of: .day, for: self)
+ }
+
+ func currentMonthInterval(using calendar: Calendar = .current) -> DateInterval?
+ {
+  calendar.dateInterval(of: .month, for: self)
+ }
+
+ func currentWeekInterval(using calendar: Calendar = .current) -> DateInterval?
+ {
+  calendar.dateInterval(of: .weekOfYear, for: self)
+ }
+
+ func currentYearInterval(using calendar: Calendar = .current) -> DateInterval?
+ {
+  calendar.dateInterval(of: .year, for: self)
+ }
+
  public var dayNumber: Int { self.dayNumber(calendar: .current) }
 
  public func dayNumber(calendar: Calendar) -> Int
@@ -128,7 +148,7 @@ extension Date
 
   return calendar.isDate(self, equalTo: date, toGranularity: toGranularity)
  }
- 
+
  // TODO: create a func "duration" with parameters to define granularity
  // TODO: create also a version with "from" parameter
  @available(*, deprecated, renamed: "duration", message: "use .duration(to: date, components: [ .minute ]) instead")
@@ -136,7 +156,7 @@ extension Date
  {
   duration(to: date, components: [ .minute ]).minute
  }
- 
+
  public var monthNumber: Int { self.monthNumber(calendar: .current) }
 
  public func monthNumber(calendar: Calendar) -> Int
@@ -182,6 +202,14 @@ extension Date
   return calendar.range(of: .weekOfMonth, in: .month, for: lastDayOfMonth)!.count < 7 ? 1 : 0
  }
 
+ func previousDayInterval(using calendar: Calendar = .current) -> DateInterval?
+ {
+  guard let day = calendar.date(byAdding: .day, value: -1, to: self)
+  else { return nil }
+
+  return calendar.dateInterval(of: .day, for: day)
+ }
+
  public func reducing(_ component: Calendar.Component = .day,
                       value: Int,
                       calendar: Calendar = .current) -> Date
@@ -190,7 +218,7 @@ extension Date
          value: -value,
          calendar: calendar)
  }
- 
+
  /// Returns the start of the day for the current date using the current calendar.
  public var startOfDay: Date { self.startOfDay(calendar: .current) }
 
@@ -222,6 +250,14 @@ extension Date
            calendar: calendar).startOfMonth
  }
 
+ static var thisMonthInterval: DateInterval { Date.now.currentMonthInterval()! }
+
+ static var thisWeekInterval: DateInterval { Date.now.currentWeekInterval()! }
+
+ static var thisYearInterval: DateInterval { Date.now.currentYearInterval()! }
+
+ static var todayInterval: DateInterval { Date.now.currentDayInterval()! }
+
  public var yearNumber: Int { self.yearNumber(calendar: .current) }
 
  public func yearNumber(calendar: Calendar) -> Int
@@ -244,4 +280,6 @@ extension Date
 
   return calendar.date(from: components)?.reducing(.day, value: 1)
  }
+
+ static var yesterdayInterval: DateInterval { Date.now.previousDayInterval()! }
 }
