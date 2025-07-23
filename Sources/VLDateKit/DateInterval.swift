@@ -36,7 +36,7 @@ extension DateInterval
   return calendar.dateInterval(of: component, for: self.end)
  }
 
- func previousInterval(using calendar: Calendar = .current) -> DateInterval?
+ public func previousInterval(using calendar: Calendar = .current) -> DateInterval?
  {
   guard let component = self.calendarComponent(using: calendar),
         let previousStart = calendar.date(byAdding: component, value: -1, to: self.start)
