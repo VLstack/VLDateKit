@@ -409,25 +409,25 @@ extension Date
  // MARK: - Deprecated API
  
  @available(*, deprecated, renamed: "currentDayInterval(calendar:)")
- public func currentDayInterval(using calendar: Calendar = .current) -> DateInterval?
+ public func currentDayInterval(using calendar: Calendar) -> DateInterval?
  {
   currentDayInterval(calendar: calendar)
  }
 
  @available(*, deprecated, renamed: "currentMonthInterval(calendar:)")
- public func currentMonthInterval(using calendar: Calendar = .current) -> DateInterval?
+ public func currentMonthInterval(using calendar: Calendar) -> DateInterval?
  {
   currentMonthInterval(calendar: calendar)
  }
 
  @available(*, deprecated, renamed: "currentWeekInterval(calendar:)")
- public func currentWeekInterval(using calendar: Calendar = .current) -> DateInterval?
+ public func currentWeekInterval(using calendar: Calendar) -> DateInterval?
  {
   currentWeekInterval(calendar: calendar)
  }
 
  @available(*, deprecated, renamed: "currentYearInterval(calendar:)")
- public func currentYearInterval(using calendar: Calendar = .current) -> DateInterval?
+ public func currentYearInterval(using calendar: Calendar) -> DateInterval?
  {
   currentYearInterval(calendar: calendar)
  }
@@ -439,7 +439,7 @@ extension Date
  }
 
  @available(*, deprecated, renamed: "previousDayInterval(calendar:)")
- public func previousDayInterval(using calendar: Calendar = .current) -> DateInterval?
+ public func previousDayInterval(using calendar: Calendar) -> DateInterval?
  {
   previousDayInterval(calendar: calendar)
  }
