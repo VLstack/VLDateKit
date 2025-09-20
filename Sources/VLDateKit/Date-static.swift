@@ -2,6 +2,8 @@ import Foundation
 
 extension Date
 {
+ // MARK: - Public API
+
  public static let firstDayOfWeek = Calendar.current.firstWeekday
 
  public static var fullMonthNames: [ String ]
@@ -17,20 +19,19 @@ extension Date
    else { return "?" }
 
    return formatter.string(from: date)
-   //   return date.map { formatter.string(from: $0) }
   }
  }
 
  // TODO: create a func to convert everything, or maybe use Measurement
  public static let secondsInDay: TimeInterval = 24 * 60 * 60
 
- public static var thisMonthInterval: DateInterval { Date.now.currentMonthInterval()! }
+ public static var thisMonthInterval: DateInterval { Date.now.currentMonthInterval! }
 
- public static var thisWeekInterval: DateInterval { Date.now.currentWeekInterval()! }
+ public static var thisWeekInterval: DateInterval { Date.now.currentWeekInterval! }
 
- public static var thisYearInterval: DateInterval { Date.now.currentYearInterval()! }
+ public static var thisYearInterval: DateInterval { Date.now.currentYearInterval! }
 
- public static var todayInterval: DateInterval { Date.now.currentDayInterval()! }
+ public static var todayInterval: DateInterval { Date.now.currentDayInterval! }
 
  public static var weekdays: [ String ]
  {
@@ -51,5 +52,5 @@ extension Date
   return weekdays
  }
 
- public static var yesterdayInterval: DateInterval { Date.now.previousDayInterval()! }
+ public static var yesterdayInterval: DateInterval { Date.now.previousDayInterval! }
 }
