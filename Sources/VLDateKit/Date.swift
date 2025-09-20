@@ -2,6 +2,29 @@ import Foundation
 
 extension Date
 {
+ // MARK: - Private API
+
+ /// Computes the number of full days between two dates, ignoring the time component.
+ /// Returns `0` if `start >= end`.
+ /// - Parameters:
+ ///   - start: The start date.
+ ///   - end: The end date.
+ ///   - calendar: The calendar to use for normalization and calculation.
+ /// - Returns: The number of whole days between `start` and `end`.
+ @usableFromInline
+ internal func _countDaysBetween(_ start: Date,
+                                 _ end: Date,
+                                 calendar: Calendar) -> Int
+ {
+  let startDate = calendar.startOfDay(for: start)
+  let endDate = calendar.startOfDay(for: end)
+  guard startDate < endDate else { return 0 }
+
+  return calendar.dateComponents([ .day ], from: startDate, to: endDate).day ?? 0
+ }
+
+ // MARK: - Public API
+
  /// Adds a value to a calendar component of the date.
  /// - Parameters:
  ///   - component: The calendar component to add to (default is .day).
@@ -16,30 +39,13 @@ extension Date
   calendar.date(byAdding: component, value: value, to: self) ?? self
  }
 
- /// Computes the number of full days between two dates, ignoring the time component.
- /// Returns `0` if `start >= end`.
- /// - Parameters:
- ///   - start: The start date.
- ///   - end: The end date.
- ///   - calendar: The calendar to use for normalization and calculation.
- /// - Returns: The number of whole days between `start` and `end`.
- private func _countDaysBetween(_ start: Date,
-                                _ end: Date,
-                                calendar: Calendar) -> Int
- {
-  let startDate = calendar.startOfDay(for: start)
-  let endDate = calendar.startOfDay(for: end)
-  guard startDate < endDate else { return 0 }
-
-  return calendar.dateComponents([ .day ], from: startDate, to: endDate).day ?? 0
- }
-
  /// Returns the number of days from the current date to the specified date.
  /// If the other date is earlier than the current date, the result is `0`.
  /// - Parameters:
  ///   - to: The end date to count to.
  ///   - calendar: The calendar to use (defaults to `.current`).
  /// - Returns: The number of whole days between the two dates.
+ @inlinable
  public func countDays(to other: Date,
                        calendar: Calendar = .current) -> Int
  {
@@ -52,6 +58,7 @@ extension Date
  ///   - from: The start date to count from.
  ///   - calendar: The calendar to use (defaults to `.current`).
  /// - Returns: The number of whole days between the two dates.
+ @inlinable
  public func countDays(from other: Date,
                        calendar: Calendar = .current) -> Int
  {
@@ -59,33 +66,33 @@ extension Date
  }
 
  /// Returns the DateInterval for the current day.
- /// - Parameter using: The calendar to use (default is .current).
+ /// - Parameter calendar: The calendar to use (default is .current).
  /// - Returns: The DateInterval representing the current day.
- public func currentDayInterval(using calendar: Calendar = .current) -> DateInterval?
+ public func currentDayInterval(calendar: Calendar = .current) -> DateInterval?
  {
   calendar.dateInterval(of: .day, for: self)
  }
 
  /// Returns the DateInterval for the current month.
- /// - Parameter using: The calendar to use (default is .current).
+ /// - Parameter calendar: The calendar to use (default is .current).
  /// - Returns: The DateInterval representing the current month.
- public func currentMonthInterval(using calendar: Calendar = .current) -> DateInterval?
+ public func currentMonthInterval(calendar: Calendar = .current) -> DateInterval?
  {
   calendar.dateInterval(of: .month, for: self)
  }
 
  /// Returns the DateInterval for the current week.
- /// - Parameter using: The calendar to use (default is .current).
+ /// - Parameter calendar: The calendar to use (default is .current).
  /// - Returns: The DateInterval representing the current week.
- public func currentWeekInterval(using calendar: Calendar = .current) -> DateInterval?
+ public func currentWeekInterval(calendar: Calendar = .current) -> DateInterval?
  {
   calendar.dateInterval(of: .weekOfYear, for: self)
  }
 
  /// Returns the DateInterval for the current year.
- /// - Parameter using: The calendar to use (default is .current).
+ /// - Parameter calendar: The calendar to use (default is .current).
  /// - Returns: The DateInterval representing the current year.
- public func currentYearInterval(using calendar: Calendar = .current) -> DateInterval?
+ public func currentYearInterval(calendar: Calendar = .current) -> DateInterval?
  {
   calendar.dateInterval(of: .year, for: self)
  }
@@ -222,14 +229,6 @@ extension Date
   return calendar.isDate(self, equalTo: date, toGranularity: toGranularity)
  }
 
- // TODO: create a func "duration" with parameters to define granularity
- // TODO: create also a version with "from" parameter
- @available(*, deprecated, renamed: "duration", message: "use .duration(to: date, components: [ .minute ]) instead")
- public func minutesDuration(to date: Date) -> Int?
- {
-  duration(to: date, components: [ .minute ]).minute
- }
-
  /// Returns the month component of the date in the current calendar.
  @inlinable
  public var monthNumber: Int { self.monthNumber(calendar: .current) }
@@ -306,7 +305,7 @@ extension Date
  /// Returns the DateInterval for the previous day relative to the current date.
  /// - Parameter calendar: The calendar to use (default is .current).
  /// - Returns: The DateInterval representing the previous day, or nil if calculation fails.
- public func previousDayInterval(using calendar: Calendar = .current) -> DateInterval?
+ public func previousDayInterval(calendar: Calendar = .current) -> DateInterval?
  {
   guard let day = calendar.date(byAdding: .day, value: -1, to: self)
   else { return nil }
@@ -405,5 +404,43 @@ extension Date
   let components: DateComponents = calendar.dateComponents(map[toGranularity] ?? [ .year, .month, .day ], from: self)
 
   return calendar.date(from: components)?.reducing(.day, value: 1)
+ }
+
+ // MARK: - Deprecated API
+ 
+ @available(*, deprecated, renamed: "currentDayInterval(calendar:)")
+ public func currentDayInterval(using calendar: Calendar = .current) -> DateInterval?
+ {
+  currentDayInterval(calendar: calendar)
+ }
+
+ @available(*, deprecated, renamed: "currentMonthInterval(calendar:)")
+ public func currentMonthInterval(using calendar: Calendar = .current) -> DateInterval?
+ {
+  currentMonthInterval(calendar: calendar)
+ }
+
+ @available(*, deprecated, renamed: "currentWeekInterval(calendar:)")
+ public func currentWeekInterval(using calendar: Calendar = .current) -> DateInterval?
+ {
+  currentWeekInterval(calendar: calendar)
+ }
+
+ @available(*, deprecated, renamed: "currentYearInterval(calendar:)")
+ public func currentYearInterval(using calendar: Calendar = .current) -> DateInterval?
+ {
+  currentYearInterval(calendar: calendar)
+ }
+
+ @available(*, deprecated, renamed: "duration(to:components:calendar:)", message: "use .duration(to: date, components: [ .minute ]) instead")
+ public func minutesDuration(to date: Date) -> Int?
+ {
+  duration(to: date, components: [ .minute ]).minute
+ }
+
+ @available(*, deprecated, renamed: "previousDayInterval(calendar:)")
+ public func previousDayInterval(using calendar: Calendar = .current) -> DateInterval?
+ {
+  previousDayInterval(calendar: calendar)
  }
 }
