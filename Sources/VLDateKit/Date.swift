@@ -65,12 +65,24 @@ extension Date
   self._countDaysBetween(other, self, calendar: calendar)
  }
 
+ /// Returns the DateInterval for the current day. using the current calendar
+ public var currentDayInterval: DateInterval?
+ {
+  currentDayInterval(calendar: .current)
+ }
+
  /// Returns the DateInterval for the current day.
  /// - Parameter calendar: The calendar to use (default is .current).
  /// - Returns: The DateInterval representing the current day.
  public func currentDayInterval(calendar: Calendar = .current) -> DateInterval?
  {
   calendar.dateInterval(of: .day, for: self)
+ }
+
+ /// Returns the DateInterval for the current month using the current calendar
+ public var currentMonthInterval: DateInterval?
+ {
+  currentMonthInterval(calendar: .current)
  }
 
  /// Returns the DateInterval for the current month.
@@ -81,12 +93,24 @@ extension Date
   calendar.dateInterval(of: .month, for: self)
  }
 
+ /// Returns the DateInterval for the current week using the current calendar
+ public var currentWeekInterval: DateInterval?
+ {
+  currentWeekInterval(calendar: .current)
+ }
+
  /// Returns the DateInterval for the current week.
  /// - Parameter calendar: The calendar to use (default is .current).
  /// - Returns: The DateInterval representing the current week.
  public func currentWeekInterval(calendar: Calendar = .current) -> DateInterval?
  {
   calendar.dateInterval(of: .weekOfYear, for: self)
+ }
+
+ /// Returns the DateInterval for the current year using the current calendar
+ public var currentYearInterval: DateInterval?
+ {
+  currentYearInterval(calendar: .current)
  }
 
  /// Returns the DateInterval for the current year.
