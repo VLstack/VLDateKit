@@ -326,6 +326,12 @@ extension Date
   return weekRange.count < 7 ? 1 : 0
  }
 
+ /// Returns the DateInterval for the previous day relative to the current date using the current calendar
+ public var previousDayInterval: DateInterval?
+ {
+  previousDayInterval(calendar: .current)
+ }
+
  /// Returns the DateInterval for the previous day relative to the current date.
  /// - Parameter calendar: The calendar to use (default is .current).
  /// - Returns: The DateInterval representing the previous day, or nil if calculation fails.
