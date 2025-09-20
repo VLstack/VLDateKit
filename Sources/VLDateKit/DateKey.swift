@@ -3,13 +3,23 @@ import Foundation
 
 extension VLstack
 {
+ /// A unique identifier for a date, based on year-month-day.
+ /// Useful to identify elements (like DTOs) even if multiple items share the same day.
  public struct DateKey: Identifiable, Hashable, Sendable
  {
+  /// The string identifier of the date, formatted as "YYYY-MM-DD" or a fallback for invalid dates.
   public let id: String
+  /// The year component of the date.
   public let year: Int
+  /// The month component of the date.
   public let month: Int
+  /// The day component of the date.
   public let day: Int
 
+  /// Initializes a `DateKey` from a `Date` using the provided calendar
+  /// - Parameters:
+  ///   - date: The date to extract components from.
+  ///   - calendar: The calendar to use (default is `.current`).
   public init(_ date: Date,
               calendar: Calendar = .current)
   {
