@@ -11,14 +11,9 @@ let package = Package(name: "VLDateKit",
                        .library(name: "VLDateKit",
                                 targets: [ "VLDateKit" ])
                       ],
-                      dependencies:
-                      [
-                       .package(url: "https://github.com/VLstack/VLstackNamespace", from: "1.2.0")
-                      ],
                       targets:
                       [
-                       .target(name: "VLDateKit",
-                               dependencies: [ "VLstackNamespace" ]),
+                       .target(name: "VLDateKit"),
                        .testTarget(name: "VLDateKitTests",
-                                   dependencies: [ "VLstackNamespace", "VLDateKit" ])
+                                   dependencies: [ "VLDateKit" ])
                       ])
